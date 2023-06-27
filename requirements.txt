@@ -1,6 +1,4 @@
 Flask==1.1.4
-serverless-wsgi
-
 langchain==0.0.216
 openai==0.27.0
 PyGithub==1.59.0
