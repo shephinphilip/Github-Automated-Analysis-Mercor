@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Code Complexity Analysis Result</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Code Complexity Analysis Result</h1>
+
+        <!-- Check if analysis data is available -->
+        {% if analysis %}
+        <div class="alert alert-success">
+            <p>User name: {{ analysis.username }}</p>
+            <p>Most technically complex repository: {{ analysis.most_complex_repo_name }}</p>
+            <p>Complexity score: {{ analysis.most_complex_repo_score }}</p>
+        </div>
+        {% else %}
+        <!-- Display error message if no analysis data or error occurred -->
+        <div class="alert alert-danger">
+            {% if error_message %}
+                <p>{{ error_message }}</p>
+            {% else %}
+                <p>No repositories found or an error occurred during the analysis.</p>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <!-- Link to analyze another repository -->
+        <a href="{{ url_for('index') }}" class="btn btn-primary">Analyze Another Repository</a>
+    </div>
+
+    <!-- JavaScript dependencies -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

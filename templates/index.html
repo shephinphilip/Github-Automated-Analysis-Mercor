@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Code Complexity Analyzer</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+    <!-- Include custom CSS styles -->
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Code Complexity Analyzer</h1>
+        <p>Please enter the GitHub user URL:</p>
+        <form method="POST" action="{{ url_for('index') }}">
+            <div class="form-group">
+                <!-- Text input field for user URL -->
+                <input type="text" class="form-control" id="users_url" name="users_url" placeholder="https://github.com/username" required>
+            </div>
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary">Analyze</button>
+        </form>
+    </div>
+
+    <!-- JavaScript dependencies -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
