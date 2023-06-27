@@ -69,7 +69,7 @@ def extract_username(user_url):
         return None
 
 
-openai.api_key = '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'
+openai.api_key = 'Replace with your OpenAI key'
 
 
 def fetch_user_repositories(username):
