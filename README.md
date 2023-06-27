@@ -1,7 +1,7 @@
 # Github-Automated-Analysis-Mercor
 I built a Python-based tool which, when given a GitHub user's URL, returns the most technically complex and challenging repository from that user's profile. The tool will use GPT and LangChain to assess each repository individually before determining the most technically challenging one.
 
-The Technical Complexity Analyzer is a web application built with Flask that assesses the complexity of GitHub repositories. It leverages the power of OpenAI's GPT-3 model and LangChain to analyze code repositories and provide insights on their technical complexity.
+The Github Automation Analyzer is a web application built with Flask that assesses the complexity of GitHub repositories. It leverages the power of OpenAI's GPT-3 model and LangChain to analyze code repositories and provide insights on their technical complexity.
 
 ## Features
 
