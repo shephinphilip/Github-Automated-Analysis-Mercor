@@ -1,14 +1,15 @@
 import re
-from flask import Flask, request, jsonify
+from flask import Flask, render_template, request
 import openai
 import requests
+import base64
 
 app = Flask(__name__)
 
-@app.route("/", methods=["POST"])
+@app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
-        user_url = request.form.get('users_url')  # .get() to handle missing key
+        user_url = request.form.get('users_url')  #  .get() to handle missing key 
         if user_url:
             username = extract_username(user_url)
             if username:
@@ -30,19 +31,20 @@ def index():
                         'most_complex_repo_score': most_complex_repo_score
                     }
 
-                    return jsonify(analysis)
+                    return render_template('result.html', analysis=analysis)
 
                 except Exception as e:
                     error_message = f"Failed to fetch user repositories. Error: {str(e)}"
-                    return jsonify({'error': error_message}), 500
+                    return render_template('result.html', error_message=error_message)
 
             error_message = "Invalid GitHub user URL. Please try again."
-            return jsonify({'error': error_message}), 400
+            return render_template('result.html', error_message=error_message)
 
         error_message = "Invalid GitHub user URL. Please try again."
-        return jsonify({'error': error_message}), 400
+        return render_template('result.html', error_message=error_message)
 
-    return jsonify({'message': 'Welcome to the Flask serverless function.'})
+    return render_template('index.html')
+
 
 
 def extract_username(user_url):
@@ -64,7 +66,7 @@ def extract_username(user_url):
         return None
 
 
-openai.api_key = 'Replace with your OpenAI key'
+openai.api_key = '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'
 
 
 def fetch_user_repositories(username):
@@ -79,13 +81,47 @@ def fetch_user_repositories(username):
     """
     url = f'https://api.github.com/users/{username}/repos'
     response = requests.get(url)
-
+    
     if response.status_code == 200:
         return response.json()
     elif response.status_code == 404:
         raise Exception(f"User repositories not found for username: {username}")
     else:
         raise Exception(f"Failed to fetch user repositories. Status code: {response.status_code}")
+
+def preprocess_repository_code(repository_code):
+    """
+    Preprocesses the code of a repository.
+
+    Args:
+        repository_code (dict): The code data of the repository.
+
+    Returns:
+        str: The preprocessed code.
+    """
+    MAX_CHUNK_SIZE = 1000
+    preprocessed_code = ""
+
+    if "content" in repository_code:
+        code_data = repository_code["content"]
+        code = base64.b64decode(code_data).decode("utf-8")
+        lines = code.split("\n")
+        chunk = ""
+        chunk_size = 0
+
+        for line in lines:
+            line_size = len(line) + 1
+            if chunk_size + line_size <= MAX_CHUNK_SIZE:
+                chunk += line + "\n"
+                chunk_size += line_size
+            else:
+                preprocessed_code += chunk
+                chunk = line + "\n"
+                chunk_size = line_size
+
+        preprocessed_code += chunk
+
+    return preprocessed_code
 
 
 class CodeMetrics:
