@@ -1,12 +1,19 @@
 {
   "version": 2,
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/result.html"
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",
       "destination": "/app.py"
-    },
-    {
-      "source": "/(.*)"
     }
   ]
 }
