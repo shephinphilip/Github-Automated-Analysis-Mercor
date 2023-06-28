@@ -156,36 +156,38 @@ def assess_repository(repo):
     Returns:
         tuple: The repository name, URL, and overall score.
     """
-    repo_name = repo['name']
-    repo_url = repo['html_url']
-    readme_url = f"{repo_url}/blob/master/README.md"
+    repo_name = repo.get('name')
+    repo_url = repo.get('html_url')
 
-    readme_response = requests.get(readme_url)
-    readme_content = ''
-    if readme_response.status_code == 200:
-        readme_content = readme_response.text
+    if repo_name and repo_url:
+        readme_url = f"{repo_url}/blob/master/README.md"
+        readme_response = requests.get(readme_url)
 
-    gpt_input = f"Assess the complexity of repository {repo_name}. {readme_content}"
-    gpt_prompt = generate_prompt(gpt_input)
-    gpt_response = openai.Completion.create(
-        engine='text-davinci-003',
-        prompt=gpt_prompt,
-        max_tokens=50,
-        temperature=0.5,
-        n=1,
-        stop=None,
-        top_p=1.0,
-        frequency_penalty=0.0,
-        presence_penalty=0.0
-    )
-    completion_text = gpt_response.choices[0].text.strip()
-    complexity_score = extract_complexity_score(completion_text)
+        if readme_response.status_code == 200:
+            readme_content = readme_response.text
+            gpt_input = f"Assess the complexity of repository {repo_name}. {readme_content}"
+            gpt_prompt = generate_prompt(gpt_input)
+            gpt_response = openai.Completion.create(
+                engine='text-davinci-003',
+                prompt=gpt_prompt,
+                max_tokens=50,
+                temperature=0.5,
+                n=1,
+                stop=None,
+                top_p=1.0,
+                frequency_penalty=0.0,
+                presence_penalty=0.0
+            )
+            completion_text = gpt_response.choices[0].text.strip()
+            complexity_score = extract_complexity_score(completion_text)
 
-    code_metrics = CodeMetrics(readme_content)
-    complexity_score += code_metrics.complexity_score
-    overall_score = complexity_score + code_metrics.maintainability_score
+            code_metrics = CodeMetrics(readme_content)
+            complexity_score += code_metrics.complexity_score
+            overall_score = complexity_score + code_metrics.maintainability_score
 
-    return repo_name, repo_url, overall_score
+            return repo_name, repo_url, overall_score
+
+    raise Exception("Unable to assess the repository.")
 
 
 def generate_prompt(preprocessed_code):
