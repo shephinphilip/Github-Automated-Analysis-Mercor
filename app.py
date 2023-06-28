@@ -9,7 +9,7 @@ app = Flask(__name__)
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
-        user_url = request.form.get('users_url')  #  .get() to handle missing key 
+        user_url = request.form.get('users_url')  # .get() to handle missing key
         if user_url:
             username = extract_username(user_url)
             if username:
