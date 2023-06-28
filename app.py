@@ -34,7 +34,7 @@ def index():
                     return render_template('result.html', analysis=analysis)
 
                 except Exception as e:
-                    error_message = f"Failed to fetch user repositories. Error: {str(e)}"
+                    error_message = "Failed to fetch user repositories. Error: {}".format(str(e))
                     return render_template('result.html', error_message=error_message)
 
             error_message = "Invalid GitHub user URL. Please try again."
