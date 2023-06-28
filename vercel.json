@@ -8,10 +8,6 @@
   ],
   "routes": [
     {
-      "src": "/index.html",
-      "dest": "/index.html"
-    },
-    {
       "src": "/result.html",
       "dest": "/result.html"
     }
