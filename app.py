@@ -79,7 +79,7 @@ def fetch_user_repositories(username):
     Returns:
         list: The list of repositories.
     """
-    url = 'https://api.github.com/users/{}/repos'.format(username)
+    url = f'https://api.github.com/users/{username}/repos'
     response = requests.get(url)
     
     if response.status_code == 200:
