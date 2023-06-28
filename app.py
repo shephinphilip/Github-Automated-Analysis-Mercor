@@ -79,15 +79,15 @@ def fetch_user_repositories(username):
     Returns:
         list: The list of repositories.
     """
-    url = f'https://api.github.com/users/{username}/repos'
+    url = 'https://api.github.com/users/{}/repos'.format(username)
     response = requests.get(url)
     
     if response.status_code == 200:
         return response.json()
     elif response.status_code == 404:
-        raise Exception(f"User repositories not found for username: {username}")
+        raise Exception("User repositories not found for username: {}".format(username))
     else:
-        raise Exception(f"Failed to fetch user repositories. Status code: {response.status_code}")
+        raise Exception("Failed to fetch user repositories. Status code: {}".format(response.status_code))
 
 def preprocess_repository_code(repository_code):
     """
